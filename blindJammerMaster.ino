@@ -1,14 +1,17 @@
-// Date and time functions using a DS1307 RTC connected via I2C and Wire lib
+//AutoWand Master v0.3
+//Evan Schmitt
+//2020
+
 #include <Wire.h>
-#include "RTClib.h"
+#include <RTClib.h>
 #include <Dusk2Dawn.h>
 
 #define HWSERIAL Serial1
-#define sw1Pin = 16;
-#define sw2Pin = 17;
+#define sw1Pin 16;
+#define sw2Pin 17;
 
-int switch1State = 0;
-int switch2State = 0;
+int switch1State;
+int switch2State;
 
 RTC_PCF8523 rtc;
 
