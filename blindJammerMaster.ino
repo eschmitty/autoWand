@@ -4,23 +4,27 @@
 #include <Dusk2Dawn.h>
 
 #define HWSERIAL Serial1
+#define sw1Pin = 16;
+#define sw2Pin = 17;
 
-const int swPin = 13;
-int switchState = 0;
+int switch1State = 0;
+int switch2State = 0;
 
 RTC_PCF8523 rtc;
 
-char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-
 void setup () {
 
-  pinMode(swPin, INPUT);
+  pinMode(sw1Pin, INPUT_PULLUP);
+  pinMode(sw2Pin, INPUT_PULLUP);
+  
   Serial.begin(57600);
-  Serial1.begin(9600);
+  HWSERIAL.begin(9600);
   if (! rtc.begin()) {
     Serial.println("Couldn't find RTC");
     while (1);
   }
+  Dusk2Dawn belford(40.408146, -74.091941, -5);
+
   // This line sets the RTC with an explicit date & time
   // rtc.adjust(DateTime(2020, 11, 20, 0, 28, 0));
   // following line sets the RTC to the date & time this sketch was compiled
@@ -29,7 +33,6 @@ void setup () {
 
 
 void loop () {
-  Dusk2Dawn belford(40.408146, -74.091941, -5);
   DateTime now = rtc.now();
   int sunrise  = belford.sunrise(now.year(), now.month(), now.day(), false);
   int sunset   = belford.sunset(now.year(), now.month(), now.day(), false);
@@ -37,24 +40,31 @@ void loop () {
 
   if ((now.hour() * 60) + now.minute() == sunrise - 5)
   {
-    Serial1.write("1");
+    HWSERIAL.write("1");
+    delay(15000);
   }
   else if (((now.hour() * 60) + now.minute()) == sunset + 15)
   {
-    Serial1.write("2");
+    HWSERIAL.write("2");
+    delay(15000);
   }
-  else if (switchState == HIGH)
+  else if (switch1State == LOW)
   {
-    Serial1.write("2");
+    HWSERIAL.write("3");
+    delay(200);
   }
+  else if (switch2state == LOW)
+  {
+    HWSERIAL.write("4");
+    delay(200);
+  }
+  
   //Serial.print(now.year(), DEC);
   //Serial.print('/');
   //Serial.print(now.month(), DEC);
   //Serial.print('/');
   //Serial.print(now.day(), DEC);
-  //Serial.print(" (");
-  //Serial.print(daysOfTheWeek[now.dayOfTheWeek()]);
-  //Serial.print(") ");
+  //Serial.print(", ");
   //Serial.print(now.hour(), DEC);
   //Serial.print(':');
   //Serial.print(now.minute(), DEC);
