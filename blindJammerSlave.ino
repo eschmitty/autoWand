@@ -33,7 +33,7 @@ void setup()
   stepper.setCurrentPosition(EEPROM.get( posAddress, o ));   //set current position to last know position
 
   //populate potOldVal
-  potVal = map(analogRead(potPin), 0, 1023, -1150, 1150);
+  potVal = map(analogRead(potPin), 0, 1023, 1150, -1150);
   potOldVal = potVal;
 
 }
@@ -68,7 +68,7 @@ void closeBlind()
 
 void checkPot()  //check the potentiometer position and set motor position
 {
-  potVal = map(analogRead(potPin), 0, 1023, -1150, 1150);
+  potVal = map(analogRead(potPin), 0, 1023, 1150, -1150);
   if (potVal > (potOldVal + 40) || potVal < (potOldVal - 40)) {  // pot smoothing
     stepper.moveTo(potVal);
     stepper.setMaxSpeed(5000);
@@ -113,7 +113,7 @@ void checkCalSw()      //check calibration button
 {
   calSwState = digitalRead(calSwPin);
   if (calSwState == LOW) {
-    potVal = map(analogRead(potPin), 0, 1023, -1150, 1150);
+    potVal = map(analogRead(potPin), 0, 1023, 1150, -1150);
     stepper.setCurrentPosition(0);
     stepper.moveTo(potVal);
     stepper.setMaxSpeed(5000);
