@@ -35,8 +35,7 @@ void setup () {
   // rtc.autoTime();
   // Or you can use the rtc.setTime(s, m, h, day, date, month, year)
   // function to explicitly set the time:
-  // e.g. 7:32:16 | Monday October 31, 2016:
-  // rtc.setTime(5, 59, 16, 1, 29, 12, 20);  // Uncomment to manually set time
+  // rtc.setTime(30, 14, 17, 3, 29, 12, 20);  // Uncomment to manually set time. After uploading sketch, re-comment this line and re-upload. Otherwise, time will be set at every power up.
 
   rtc.update(); // Update time/date values
 }
@@ -93,7 +92,6 @@ void loop () {
     Serial.println();
     Serial.println();
     Serial.println();
-*/
-  
+*/  
   delay(100);
 }
