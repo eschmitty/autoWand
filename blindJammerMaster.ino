@@ -36,7 +36,7 @@ void setup () {
   // Or you can use the rtc.setTime(s, m, h, day, date, month, year)
   // function to explicitly set the time:
   // e.g. 7:32:16 | Monday October 31, 2016:
-  rtc.setTime(5, 53, 19, 1, 27, 12, 20);  // Uncomment to manually set time
+  // rtc.setTime(5, 59, 16, 1, 29, 12, 20);  // Uncomment to manually set time
 
   rtc.update(); // Update time/date values
 }
@@ -44,22 +44,21 @@ void setup () {
 
 void loop () {
   rtc.update();  // Update time/date values
-  Dusk2Dawn belford(40.408146, -74.091941, -5);
-  int sunrise  = belford.sunrise(rtc.year(), rtc.month(), rtc.date(), false);
-  int sunset   = belford.sunset(rtc.year(), rtc.month(), rtc.date(), false);
+  Dusk2Dawn belford(40.408146, -74.091941, -5);  // Define Location for Belford, NJ
+  int sunrise  = belford.sunrise(rtc.year(), rtc.month(), rtc.date(), false);  // Store sunrise as minutes past midnight
+  int sunset   = belford.sunset(rtc.year(), rtc.month(), rtc.date(), false);   // Store sunset as minutes past midnight
   switch1State = digitalRead(sw1Pin);
   switch2State = digitalRead(sw2Pin);
 
-  if ((rtc.hour() * 60) + rtc.minute() == sunrise - 5)
+  if (rtc.hour() * 60 + rtc.minute() == sunrise - 5)
   {
     HWSERIAL.write("1");
-    delay(15000);
+    delay(1000);
   }
-  else if (((rtc.hour() * 60) + rtc.minute()) == sunset + 25
-          )
+  else if (rtc.hour() * 60 + rtc.minute() == sunset + 15)
   {
     HWSERIAL.write("2");
-    delay(15000);
+    delay(1000);
   }
   else if (switch1State == LOW)
   {
@@ -71,20 +70,30 @@ void loop () {
     HWSERIAL.write("4");
     delay(200);
   }
+  
 /*
-  Serial.print(rtc.year(), DEC);
-  Serial.print('/');
-  Serial.print(rtc.month(), DEC);
-  Serial.print('/');
-  Serial.print(rtc.date(), DEC);
-  Serial.print(", ");
-  Serial.print(rtc.hour(), DEC);
-  Serial.print(':');
-  Serial.print(rtc.minute(), DEC);
-  Serial.print(':');
-  Serial.print(rtc.second(), DEC);
-  Serial.println();
-  Serial.println(sunrise);
-  */
+    // Debugging
+    Serial.print(rtc.year(), DEC);
+    Serial.print('/');
+    Serial.print(rtc.month(), DEC);
+    Serial.print('/');
+    Serial.print(rtc.date(), DEC);
+    Serial.print(", ");
+    Serial.print(rtc.hour(), DEC);
+    Serial.print(':');
+    Serial.print(rtc.minute(), DEC);
+    Serial.print(':');
+    Serial.println(rtc.second(), DEC);
+    Serial.print("Sunrise: ");
+    Serial.println(sunrise);
+    Serial.print("Sunset: ");
+    Serial.println(sunset);
+    Serial.print("Minutes past midnight: ");
+    Serial.print((rtc.hour() * 60) + rtc.minute());
+    Serial.println();
+    Serial.println();
+    Serial.println();
+*/
+  
   delay(100);
 }
